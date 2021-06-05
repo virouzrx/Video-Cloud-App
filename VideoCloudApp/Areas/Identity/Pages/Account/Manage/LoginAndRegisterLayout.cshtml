@@ -1,0 +1,38 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row d-flex justify-content-center">
+    @*<div class="com-md6 offset-md-3">*@
+    <div class="choose-card">
+        <div id="buttoncontainer"class="login-and-register-card-container" style="text-align: center;font-size: 0;">
+            <button class="btn" href='/Identity/Account/Login'>Logowanie</button>
+            <button class="btn" href='/Identity/Account/Login'>Rejestracja</button>
+        </div>
+        <div class="card-content">
+            <div class="row">
+                <div class="col-md-12">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+    @*</div>*@
+</div>
+
+@section Scripts{
+    @RenderSection("Scripts", required: false)
+
+<script>
+    // Add active class to the current button (highlight it)
+    $(function () {
+        var current = this.location.pathname;
+        $('.login-and-register-card-container button').each(function () {
+            var $this = $(this);
+            if (current.indexOf($this.attr('href')) !== -1) {
+                $this.addClass('active');
+            }
+        })
+    })
+</script>
+}

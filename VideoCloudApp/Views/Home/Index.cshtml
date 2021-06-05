@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model List<VideoModel>
+<div class="text-center">
+    <h1 class="display-4">wwwelcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<div class="container">
+    @foreach (var video in Model)
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <video id="player" controls playsinline poster="/img/poster.jpg">
+                    <source src="@video.VideoBasicFilePath" type="video/mp4" size="1080">
+                    <a href="@video.VideoBasicFilePath" download>Download</a>
+                </video>
+            </div>
+        </div>
+    }
+
+</div>
+
+@section Scripts {
+
+}

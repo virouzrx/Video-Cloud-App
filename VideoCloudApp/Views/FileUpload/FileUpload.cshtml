@@ -1,0 +1,24 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model VideoCloudApp.Models.VideoModel 
+
+<form method="post" enctype="multipart/form-data" asp-controller="FileUpload" asp-action="FileUpload" asp-route-title="@Model.Title"  asp-route-description="@Model.Description">
+    <div asp-validation-summary="ModelOnly"></div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <p>Upload one or more files using this form:</p>
+            <input type="file" name="files"/>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-10">
+            <input asp-for="Title" name="title" placeholder="Video name...">
+            <input asp-for="Description" name="description" placeholder="Video description...">
+            <input type="submit" value="Upload" class="btn"/>
+        </div>
+    </div>
+</form>
