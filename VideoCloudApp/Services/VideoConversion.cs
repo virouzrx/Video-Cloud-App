@@ -26,11 +26,38 @@ namespace VideoCloudApp.Services
 
             return videoResolution;
         }
-        //c/nanana/projekt/nanana/uploads/guid/file.mp4 <- OrigianFilePath <- the file which is converted
-        //c/nanana/projekt/nanana/uploads/guid/ <- The directory where all converted files will be
+
+        public async Task<int> GetVideoDuration(string OriginalFilePath)
+        {
+            MediaFile input = new(OriginalFilePath);
+            var metadata = await ffmpeg.GetMetaDataAsync(input);
+            var duration = Convert.ToInt32(metadata.Duration.TotalSeconds);
+
+            return duration;
+        }
+
+
+        public async Task<string> GetVideoThumbnail(string FileDirectory, string OriginalFilePath, string FileGuid)
+        {
+            string PosterFileLocalPath = Path.Combine(FileDirectory, "poster");
+            string PosterFileDirectory = Path.Combine(PosterFileLocalPath, "poster.jpg");
+            Directory.CreateDirectory(PosterFileLocalPath);
+            MediaFile input = new(OriginalFilePath);
+            MediaFile output = new(PosterFileDirectory);
+            
+            var duration = await GetVideoDuration(OriginalFilePath);
+            var rnd = Convert.ToDouble(new Random().Next(1, duration));
+            
+            
+            
+            var options = new ConversionOptions { Seek = TimeSpan.FromSeconds(rnd)};
+            await ffmpeg.GetThumbnailAsync(input, output, options);
+
+            return string.Concat("/uploads/", FileGuid.ToString(), "/poster", "/poster.jpg");
+        }
+
         public async Task<Dictionary<int, string>> DoAllConversions(string OriginalFileDirectory, string OriginalFilePath, string FileGuid)
         {
-            string upload = "upload";
             #region paths 
             string x1080path = Path.Combine(OriginalFileDirectory, "1080");
             string x720path = Path.Combine(OriginalFileDirectory, "720");

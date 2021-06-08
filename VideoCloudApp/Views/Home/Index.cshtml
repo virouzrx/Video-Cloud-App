@@ -7,20 +7,36 @@
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 <div class="container">
-    @foreach (var video in Model)
-    {
-        <div class="row">
-            <div class="col-md-6">
-                <video id="player" controls playsinline poster="/img/poster.jpg">
-                    <source src="@video.VideoBasicFilePath" type="video/mp4" size="1080">
-                    <a href="@video.VideoBasicFilePath" download>Download</a>
-                </video>
-            </div>
+
+    <div class="input-group">
+        <div class="form-outline">
+            <input id="search-input" type="search" class="form-control" />
+            <label class="form-label" for="form1">Search</label>
         </div>
+        <button id="search-button" type="button" class="btn btn-primary">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+
+        <div class="card-columns">
+            @foreach (var item in Model)
+            {
+                <div class="card">
+                    <a href="#">
+                        <img class="card-img-top" src="@Url.Content(item.PosterPath)" alt="Card image cap" loading="lazy">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Title</h5>
+                            <p class="card-text">
+                                @item.Description
+                            </p>
+                            <p class="card-text"><small class="text-muted">@item.UploadDate.ToString()</small></p>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+    @section Scripts {
+
     }
-
-</div>
-
-@section Scripts {
-
-}

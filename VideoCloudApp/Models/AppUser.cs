@@ -8,6 +8,6 @@ namespace VideoCloudApp.Models
 {
     public class AppUser : IdentityUser
     {
-        public virtual IEnumerable<VideoModel> Videos { get; set; }
+        public virtual ICollection<VideoModel> Videos { get; set; }
     }
 }

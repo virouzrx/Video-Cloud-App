@@ -3,22 +3,97 @@
 *@
 @{
 }
-@model VideoCloudApp.Models.VideoModel 
+@model VideoCloudApp.ViewModels.VideoUploadViewModel
 
-<form method="post" enctype="multipart/form-data" asp-controller="FileUpload" asp-action="FileUpload" asp-route-title="@Model.Title"  asp-route-description="@Model.Description">
-    <div asp-validation-summary="ModelOnly"></div>
+<form method="post" enctype="multipart/form-data" asp-controller="FileUpload" asp-action="FileUpload">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
-        <div class="col-md-10">
-            <p>Upload one or more files using this form:</p>
-            <input type="file" name="files"/>
+        <input class="form-control form-control-lg" asp-for="Title" name="title" placeholder="Video name..." onchange="">
+        <span id="title-validation" asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" asp-for="Description" name="description" placeholder="Video description..."></textarea>
+        <span id="description-validation" asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <div class="file-upload">
+            <!--<button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>-->
+
+            <div class="image-upload-wrap">
+                <input asp-for="File " class="file-upload-input" name="file" onchange="readURL(this);" accept="video/*" />
+                <div class="drag-text">
+                    <h3>Drag and drop a file or select add Image</h3>
+                </div>
+            </div>
+            <span id="file-validation" asp-validation-for="File" class="text-danger"></span>
+            <div class="file-upload-content">
+                <div class="image-title-wrap">
+                    <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+                </div>
+            </div>
         </div>
     </div>
-
-    <div class="form-group">
-        <div class="col-md-10">
-            <input asp-for="Title" name="title" placeholder="Video name...">
-            <input asp-for="Description" name="description" placeholder="Video description...">
-            <input type="submit" value="Upload" class="btn"/>
-        </div>
-    </div>
+    
+    <input class="file-upload-btn" type="submit" onclick="showSpinner()" value="Upload"/>
 </form>
+
+
+
+
+<div class="d-flex justify-content-center">
+    <div id="spinner" class="spinner-grow" style="margin: 5rem; width: 6rem; height: 6rem;" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script>
+        function showSpinner() {
+            var spinner = document.getElementById("spinner");
+            spinner.classList.add("spinner--db");
+            this.disabled = true;
+            document.getElementById("imageButton").disabled = true;
+        }
+    </script>
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.image-upload-wrap').hide();
+
+                    $('.file-upload-image').attr('src', e.target.result);
+                    $('.file-upload-content').show();
+
+                    $('.image-title').html(input.files[0].name);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+
+            } else {
+                removeUpload();
+            }
+        }
+
+        function removeUpload() {
+            $('.file-upload-input').replaceWith($('.file-upload-input').clone());
+            $('.file-upload-content').hide();
+            $('.image-upload-wrap').show();
+        }
+        $('.image-upload-wrap').bind('dragover', function () {
+            $('.image-upload-wrap').addClass('image-dropping');
+        });
+        $('.image-upload-wrap').bind('dragleave', function () {
+            $('.image-upload-wrap').removeClass('image-dropping');
+        });
+    </script>
+<script>
+    function disableButtons() {
+        
+    }
+</script>
+}
